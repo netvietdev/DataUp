@@ -7,14 +7,16 @@
     <authors>juniho</authors>
     <owners>RabbitSoftware</owners>
     <description>
-      DataUp makes data migration tasks safe and easy. Just build data revision as .NET classes and DataUp executes them if needed.
+      DataUp makes data migration tasks safe and easy. Just build your application's data revisions as .NET classes
+      then let DataUp to execute them if needed (if a revision has not executed yet).
+      For details: https://juanonsoftware.github.io/DataUp/
     </description>
     <releaseNotes>
     </releaseNotes>
     <summary>
     </summary>
     <language>en-US</language>
-    <projectUrl>https://nuget.org/packages/NuGet.Rabbit.DataUp</projectUrl>
+    <projectUrl>https://juanonsoftware.github.io/DataUp/</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
