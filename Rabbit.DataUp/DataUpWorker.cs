@@ -1,27 +1,29 @@
+using Rabbit.DataUp.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Rabbit.DataUp.Domain;
 
 namespace Rabbit.DataUp
 {
     public class DataUpWorker
     {
+        private readonly string _tag;
         private readonly Assembly[] _assemblies;
         private readonly DataUpContext _dbContext;
 
-        internal DataUpWorker(params Assembly[] assemblies)
+        internal DataUpWorker(string tag, params Assembly[] assemblies)
         {
+            _tag = tag;
             _assemblies = assemblies;
             _dbContext = new DataUpContext();
         }
 
         public IList<string> PerformUpdate()
         {
-            var executedTypes = new List<string>();
+            var revisions = GetDataRevisions();
 
-            var revisions = GetRemainingDataRevisions();
+            var executedTypes = new List<string>();
 
             foreach (var dataRevision in revisions)
             {
@@ -48,14 +50,22 @@ namespace Rabbit.DataUp
             return executedTypes;
         }
 
-        private IEnumerable<IDataRevision> GetRemainingDataRevisions()
+        private IEnumerable<IDataRevision> GetDataRevisions()
         {
-            return from assembly in _assemblies
-                   from revisionType in assembly.GetTypes()
-                                                .Where(x => x.IsPublic &&
-                                                            !x.IsAbstract &&
-                                                            typeof(IDataRevision).IsAssignableFrom(x))
-                   select (IDataRevision)Activator.CreateInstance(revisionType);
+            var dataRevisions = from assembly in _assemblies
+                                from revisionType in assembly.GetTypes()
+                                                             .Where(x => x.IsPublic &&
+                                                                         !x.IsAbstract &&
+                                                                         typeof(IDataRevision).IsAssignableFrom(x))
+                                select (IDataRevision)Activator.CreateInstance(revisionType);
+
+            if (!string.IsNullOrWhiteSpace(_tag))
+            {
+                dataRevisions =
+                    dataRevisions.Where(x => x.Tags.Contains(_tag, StringComparer.InvariantCultureIgnoreCase));
+            }
+
+            return dataRevisions.OrderBy(x => x.VersionNumber);
         }
     }
 }

@@ -9,7 +9,15 @@ namespace Rabbit.DataUp
         /// </summary>
         public static DataUpWorker Initialize(params Assembly[] assemblies)
         {
-            return new DataUpWorker(assemblies);
+            return new DataUpWorker(string.Empty, assemblies);
+        }
+
+        /// <summary>
+        /// Initialize all data revisions from specified assemblies and tag
+        /// </summary>
+        public static DataUpWorker Initialize(string tag, params Assembly[] assemblies)
+        {
+            return new DataUpWorker(tag, assemblies);
         }
     }
 }

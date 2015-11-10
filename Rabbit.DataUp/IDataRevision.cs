@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Rabbit.DataUp
 {
@@ -7,5 +8,7 @@ namespace Rabbit.DataUp
         bool Execute();
 
         Version VersionNumber { get; }
+
+        IEnumerable<string> Tags { get; }
     }
 }
