@@ -12,12 +12,12 @@ namespace Rabbit.DataUp
         private readonly DataUpContext _dbContext;
         private readonly IDataRevisionSearchWorker _dataRevisionSearchWorker;
 
-        internal DataUpWorker(string tag, params Assembly[] assemblies)
+        internal DataUpWorker(string tag, IDataRevisionSearchWorker dataRevisionSearchWorker, params Assembly[] assemblies)
         {
             _tag = tag;
             _assemblies = assemblies;
+            _dataRevisionSearchWorker = dataRevisionSearchWorker;
             _dbContext = new DataUpContext();
-            _dataRevisionSearchWorker = new DefaultDataRevisionSearchWorker();
         }
 
         public IList<string> PerformUpdate()
