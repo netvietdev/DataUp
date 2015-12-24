@@ -33,14 +33,9 @@ namespace Rabbit.DataUp
 
         private IEnumerable<IDataRevision> FindExecutedRevisions(IDbSet<Revision> systemRevisions, IEnumerable<IDataRevision> allRevisions)
         {
-            if (!systemRevisions.Any())
-            {
-                return Enumerable.Empty<IDataRevision>();
-            }
-
             return from dataRevision in allRevisions
                    let revisionType = dataRevision.GetType().FullName
-                   where !systemRevisions.Any(x => revisionType.Equals(x.Type, StringComparison.InvariantCultureIgnoreCase))
+                   where systemRevisions.Any(x => revisionType.Equals(x.Type, StringComparison.InvariantCultureIgnoreCase))
                    select dataRevision;
         }
     }
