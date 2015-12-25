@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 
 namespace Rabbit.DataUp
@@ -9,23 +10,23 @@ namespace Rabbit.DataUp
         /// </summary>
         public static DataUpWorker Initialize(params Assembly[] assemblies)
         {
-            return Initialize(string.Empty, assemblies);
+            return Initialize(Enumerable.Empty<string>().ToArray(), assemblies);
         }
 
         /// <summary>
         /// Initialize all data revisions from specified assemblies and tag
         /// </summary>
-        public static DataUpWorker Initialize(string tag, params Assembly[] assemblies)
+        public static DataUpWorker Initialize(string[] tags, params Assembly[] assemblies)
         {
-            return new DataUpWorker(tag, new DefaultDataRevisionSearchWorker(), assemblies);
+            return new DataUpWorker(new DefaultDataUpHandlerSearchWorker(), tags, assemblies);
         }
 
         /// <summary>
         /// Initialize all data revisions from specified assemblies, tag
         /// </summary>
-        public static DataUpWorker Initialize(string tag, IDataRevisionSearchWorker dataRevisionSearchWorker, params Assembly[] assemblies)
+        public static DataUpWorker Initialize(IDataUpHandlerSearchWorker dataUpHandlerSearchWorker, string[] tags, params Assembly[] assemblies)
         {
-            return new DataUpWorker(tag, dataRevisionSearchWorker, assemblies);
+            return new DataUpWorker(dataUpHandlerSearchWorker, tags, assemblies);
         }
     }
 }

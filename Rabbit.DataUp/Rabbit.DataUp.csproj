@@ -47,12 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataUpExecution.cs" />
-    <Compile Include="DefaultDataRevisionSearchWorker.cs" />
+    <Compile Include="DefaultDataUpHandlerSearchWorker.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Domain\DataUpContext.cs" />
     <Compile Include="DataUpWorker.cs" />
-    <Compile Include="IDataRevision.cs" />
+    <Compile Include="IDataUpHandler.cs" />
     <Compile Include="Domain\Revision.cs" />
-    <Compile Include="IDataRevisionSearchWorker.cs" />
+    <Compile Include="IDataUpHandlerSearchWorker.cs" />
     <Compile Include="Migrations\201511100311095_V01.cs" />
     <Compile Include="Migrations\201511100311095_V01.Designer.cs">
       <DependentUpon>201511100311095_V01.cs</DependentUpon>

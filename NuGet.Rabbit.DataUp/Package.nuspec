@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DataUp</id>
-    <version>2.0.1</version>
+    <version>2.1.0</version>
     <title>Rabbit.DataUp</title>
     <authors>juniho</authors>
     <owners>RabbitSoftware</owners>
@@ -12,6 +12,10 @@
       For details: https://juanonsoftware.github.io/DataUp/
     </description>
     <releaseNotes>
+      Version 2.1.0
+      - Initialize with multiple tags. When specifying a tag, handle with no tag or contains exact tag will be selected.
+      Version 2.0.1
+      - Fix searching handlers that have executed.
     </releaseNotes>
     <summary>
     </summary>

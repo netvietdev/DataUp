@@ -7,21 +7,21 @@ using System.Reflection;
 
 namespace Rabbit.DataUp
 {
-    internal class DefaultDataRevisionSearchWorker : IDataRevisionSearchWorker
+    internal class DefaultDataUpHandlerSearchWorker : IDataUpHandlerSearchWorker
     {
-        public IEnumerable<IDataRevision> GetRemainingRevisions(IDbSet<Revision> systemRevisions, string tag, params Assembly[] assemblies)
+        public IEnumerable<IDataUpHandler> GetRemainingRevisions(IDbSet<Revision> systemRevisions, string[] tags, params Assembly[] assemblies)
         {
             var dataRevisions = from assembly in assemblies
                                 from revisionType in assembly.GetTypes()
                                                              .Where(x => x.IsPublic &&
                                                                          !x.IsAbstract &&
-                                                                         typeof(IDataRevision).IsAssignableFrom(x))
-                                select (IDataRevision)Activator.CreateInstance(revisionType);
+                                                                         typeof(IDataUpHandler).IsAssignableFrom(x))
+                                select (IDataUpHandler)Activator.CreateInstance(revisionType);
 
             // Filter revisions by tag
-            dataRevisions = string.IsNullOrWhiteSpace(tag)
-                ? dataRevisions.Where(x => !x.Tags.Any() || x.Tags.Any(string.IsNullOrWhiteSpace))
-                : dataRevisions.Where(x => x.Tags.Contains(tag, StringComparer.InvariantCultureIgnoreCase));
+            dataRevisions = (tags.Length == 0)
+                ? dataRevisions.Where(x => !x.Tags.Any())
+                : dataRevisions.Where(x => !x.Tags.Any() || x.Tags.Intersect(tags, StringComparer.InvariantCultureIgnoreCase).Any());
 
             // Get remaining revisions
             var revisionList = dataRevisions.ToList();
@@ -31,7 +31,7 @@ namespace Rabbit.DataUp
             return remainingRevisions;
         }
 
-        private IEnumerable<IDataRevision> FindExecutedRevisions(IDbSet<Revision> systemRevisions, IEnumerable<IDataRevision> allRevisions)
+        private IEnumerable<IDataUpHandler> FindExecutedRevisions(IDbSet<Revision> systemRevisions, IEnumerable<IDataUpHandler> allRevisions)
         {
             return from dataRevision in allRevisions
                    let revisionType = dataRevision.GetType().FullName

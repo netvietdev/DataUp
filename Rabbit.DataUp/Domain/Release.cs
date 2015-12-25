@@ -2,9 +2,9 @@
 
 namespace Rabbit.DataUp.Domain
 {
-    public class Revision
+    public class Release
     {
-        public Revision()
+        public Release()
         {
             Id = Guid.NewGuid();
         }
@@ -18,6 +18,11 @@ namespace Rabbit.DataUp.Domain
         /// Fullname of IDataRevision class
         /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// The date that this release is planned
+        /// </summary>
+        public DateTime ReleaseDate { get; set; }
 
         /// <summary>
         /// The date inwhich the revision has been executed
