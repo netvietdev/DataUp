@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Rabbit.DataUp
 {
-    public interface IDataRevision
+    public interface IDataUpHandler
     {
         bool Execute();
 

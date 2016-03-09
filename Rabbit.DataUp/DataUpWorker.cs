@@ -7,22 +7,22 @@ namespace Rabbit.DataUp
 {
     public class DataUpWorker
     {
-        private readonly string _tag;
+        private readonly string[] _tags;
         private readonly Assembly[] _assemblies;
         private readonly DataUpContext _dbContext;
-        private readonly IDataRevisionSearchWorker _dataRevisionSearchWorker;
+        private readonly IDataUpHandlerSearchWorker _dataUpHandlerSearchWorker;
 
-        internal DataUpWorker(string tag, IDataRevisionSearchWorker dataRevisionSearchWorker, params Assembly[] assemblies)
+        internal DataUpWorker(IDataUpHandlerSearchWorker dataUpHandlerSearchWorker, string[] tags, params Assembly[] assemblies)
         {
-            _tag = tag;
+            _tags = tags;
             _assemblies = assemblies;
-            _dataRevisionSearchWorker = dataRevisionSearchWorker;
+            _dataUpHandlerSearchWorker = dataUpHandlerSearchWorker;
             _dbContext = new DataUpContext();
         }
 
         public IList<string> PerformUpdate()
         {
-            var revisions = _dataRevisionSearchWorker.GetRemainingRevisions(_dbContext.Revisions, _tag, _assemblies);
+            var revisions = _dataUpHandlerSearchWorker.GetRemainingRevisions(_dbContext.Revisions, _tags, _assemblies);
             var executedTypes = new List<string>();
 
             foreach (var dataRevision in revisions)
