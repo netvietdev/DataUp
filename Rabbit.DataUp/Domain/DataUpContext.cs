@@ -1,3 +1,4 @@
+using System.Configuration;
 using System.Data.Entity;
 
 namespace Rabbit.DataUp.Domain
@@ -5,7 +6,7 @@ namespace Rabbit.DataUp.Domain
     public class DataUpContext : DbContext
     {
         public DataUpContext()
-            : base("DataUp")
+            : base(ConfigurationManager.ConnectionStrings["DataUp"].ConnectionString)
         {
         }
 
